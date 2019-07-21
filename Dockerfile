@@ -2,6 +2,8 @@
 ###################################
 #Build stage
 FROM arm32v7/golang:1.12-alpine3.10 AS build-env
+RUN [ “cross-build-start” ]
+
 
 ARG GITEA_VERSION
 ARG TAGS="sqlite sqlite_unlock_notify"
@@ -59,3 +61,5 @@ CMD ["/bin/s6-svscan", "/etc/s6"]
 COPY docker/root /
 COPY --from=build-env /go/src/code.gitea.io/gitea/gitea /app/gitea/gitea
 RUN ln -s /app/gitea/gitea /usr/local/bin/gitea
+
+RUN [ “cross-build-end” ]
